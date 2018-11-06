@@ -7,7 +7,9 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
     buildProperties."Build" = "#${env.BUILD_NUMBER}"
     if (env.VERSION) buildProperties."Version" = "v${env.VERSION}"
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
-    if (currentBuild.changeSets.logs) buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.join(", ")}"
+    if (currentBuild.changeSets.logs) {
+        buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.flatten().join(", ")}"
+    }
 
     Map<String, String> actions = [
         "BUILD": env.BUILD_URL,
