@@ -29,14 +29,18 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
     if (buildProperties) {
         complexMessage.cards[0].sections << [
             header: "Properties",
-            widgets: buildProperties.collect { key, value -> [keyValue: [topLabel: key, content: value]] }
+            widgets: buildProperties.collect { key, value ->
+                [keyValue: [topLabel: key, content: value]]
+            }
         ]
     }
 
     if (params) {
         complexMessage.cards[0].sections << [
             header: "Parameters",
-            widgets: params.collect { key, value -> [keyValue: [topLabel: key, content: value]] }
+            widgets: params.collect { key, value ->
+                [keyValue: [topLabel: key, content: value]]
+            }
         ]
     }
 
