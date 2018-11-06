@@ -42,7 +42,14 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
 
     if (actions) {
         complexMessage.cards[0].sections << [
-            widgets: [buttons: actions.collect { label, href -> [textButton: [text: label, onClick: [openLink: [url: href]]]] }]
+            widgets: [
+                [
+                    buttons: 
+                        actions.collect { label, href ->
+                            [textButton: [text: label, onClick: [openLink: [url: href]]]]
+                        }
+                ]
+            ]
         ]
     }
 
