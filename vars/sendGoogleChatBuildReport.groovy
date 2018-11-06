@@ -2,7 +2,8 @@
 
 import static groovy.json.JsonOutput.toJson
 
-void call(final String message, final String url = env.GOOGLE_CHAT_URL) {
+void call(final String url = env.GOOGLE_CHAT_URL) {
+    final Map<String, Object> buildProperties = [:]
     buildProperties."Build" = "#${env.BUILD_NUMBER}"
     if (env.VERSION) buildProperties."Version" = "v${env.VERSION}"
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
