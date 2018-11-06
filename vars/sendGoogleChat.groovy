@@ -51,6 +51,8 @@ void buildReport(final String url, final Map<String, String> buildProperties = [
         ]
     }
 
-    httpRequest(requestBody: toJson(complexMessage),
-            url: url, httpMode: 'POST', contentType: 'APPLICATION_JSON_UTF8')
+    final String requestBody = toJson(complexMessage)
+    echo requestBody
+
+    httpRequest(requestBody: requestBody, url: url, httpMode: 'POST', contentType: 'APPLICATION_JSON_UTF8')
 }
