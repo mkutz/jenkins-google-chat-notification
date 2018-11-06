@@ -47,7 +47,7 @@ void buildReport(final String url, final Map<String, String> buildProperties = [
 
     if (actions) {
         complexMessage.cards[0].sections << [
-            widgets: [buttons: actions.collect { label, url -> [textButton: [text: label, onClick: [openLink: [url: url]]]]] }
+            widgets: [buttons: actions.collect { label, href -> [textButton: [text: label, onClick: [openLink: [url: href]]]] }]
         ]
     }
 
