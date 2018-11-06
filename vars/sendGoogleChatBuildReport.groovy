@@ -9,11 +9,6 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
     if (currentBuild.changeSets) buildProperties."Changes" = "${currentBuild.changeSets.join(", ")}"
 
-    Map<String, String> actions = [
-        "BUILD": env.BUILD_URL,
-        "CONSOLE": "${env.BUILD_URL}console",
-        "TESTS": "${env.BUILD_URL}testReport"
-    ]
 
     final Map<String, Object> complexMessage = [
         cards: [
