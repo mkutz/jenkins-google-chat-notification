@@ -9,7 +9,6 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
     if (currentBuild.changeSets) buildProperties."Changes" = "${currentBuild.changeSets.join(", ")}"
 
-
     final Map<String, Object> complexMessage = [
         cards: [
             [
@@ -36,19 +35,6 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
             widgets: params.collect { key, value ->
                 [keyValue: [topLabel: key, content: value]]
             }
-        ]
-    }
-
-    if (actions) {
-        complexMessage.cards[0].sections << [
-            widgets: [
-                [
-                    buttons: 
-                        actions.collect { label, href ->
-                            [textButton: [text: label, onClick: [openLink: [url: href]]]]
-                        }
-                ]
-            ]
         ]
     }
 
