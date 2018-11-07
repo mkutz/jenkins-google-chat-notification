@@ -47,9 +47,14 @@ This step sends a bunch of data about the build as a [Card Message].
 #### Example
 
 ```groovy
-sendGoogleChatBuildReport(version: env.VERSION)
+sendGoogleChatBuildReport(Version: env.VERSION,
+    message: "This is a <strike>simple</strike> <i>card<i> text message " +
+                 "with a <a href=\"https://github.com/mkutz/jenkins-google-chat-notification\">link</a>" +
+                 "<br>and a line break, " +
+                 "which does not support mention @all users in the Group.")
 ```
 ![Image of the build report message in Google Chat](example-build-report.png)
+
 
 [Google Chat Service]: <https://developers.google.com/hangouts/chat/>
 [Simple Message]: <https://developers.google.com/hangouts/chat/reference/message-formats/basic>
