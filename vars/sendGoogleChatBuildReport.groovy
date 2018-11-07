@@ -2,10 +2,8 @@
 
 import static groovy.json.JsonOutput.toJson
 
-void call(final String url = env.GOOGLE_CHAT_URL) {
-    final Map<String, Object> buildProperties = [:]
+void call(final Map<String, String> buildProperties = [:], final String url = env.GOOGLE_CHAT_URL) {
     buildProperties."Build" = "#${env.BUILD_NUMBER}"
-    if (env.VERSION) buildProperties."Version" = "v${env.VERSION}"
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
     if (currentBuild.changeSets.logs) {
         buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.flatten().join(", ")}"
@@ -27,6 +25,17 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
             ]
         ]
     ]
+
+    if (buildProperties.message) {
+        final String message = buildProperties.remove("message")
+        complexMessage.cards[0].sections << [
+            "widgets": [
+                [
+                    textParagraph: [text: message]
+                ]
+            ]
+        ]
+    }
 
     if (buildProperties) {
         complexMessage.cards[0].sections << [
@@ -50,7 +59,7 @@ void call(final String url = env.GOOGLE_CHAT_URL) {
         complexMessage.cards[0].sections << [
             widgets: [
                 [
-                    buttons: 
+                    buttons:
                         actions.collect { label, href ->
                             [textButton: [text: label, onClick: [openLink: [url: href]]]]
                         }

@@ -19,7 +19,10 @@ This repository can be used as a [Shared Library][Shared Libraries] by [Jenkins]
 
 This step can be used to send [Simple Message]s. It takes the message as its only mandatory parameter. As a second parameter you can pass the Webhook URL or you can define it in an environment variable named `GOOGLE_CHAT_URL`.
 
-You can use any formatting as described [here][Simple Message].
+#### Parameters
+
+- `String message` (mandatory): The text message to be sent. You can use any formatting as described [here][Simple Message].
+- `String url` (optional): the Google Chat Webhook URL to be used. Needs to be defined, if `env.GOOGLE_CHAT_URL` is not set!``
 
 #### Example
 
@@ -34,19 +37,25 @@ sendGoogleChat("This is a _simple_ text message " +
 
 ### `sendGoogleChatBuildReport`
 
-This step sends a bunch of data about the build as a [Card Message]. There is no mandatory parameter. Just like `sendGoogleChat` you can pass the Webhook URL if you did not define it as `GOOGLE_CHAT_URL` environment variable.
+This step sends a bunch of data about the build as a [Card Message].
+
+#### Parameters
+
+- `Map<String, String> buildProperties` (optional): adds the given data as [KeyValue Widget]s to the [Card Message]. If there is a key `message` it will be added as a [Text Paragraph Widget] instead.
+- `String url` (optional): the Google Chat Webhook URL to be used. Needs to be defined, if `env.GOOGLE_CHAT_URL` is not set!``
 
 #### Example
 
 ```groovy
-sendGoogleChatBuildReport()
+sendGoogleChatBuildReport(version: env.VERSION)
 ```
 ![Image of the build report message in Google Chat](example-build-report.png)
-
 
 [Google Chat Service]: <https://developers.google.com/hangouts/chat/>
 [Simple Message]: <https://developers.google.com/hangouts/chat/reference/message-formats/basic>
 [Card Message]: <https://developers.google.com/hangouts/chat/reference/message-formats/cards>
+[Text Paragraph Widget]: <https://developers.google.com/hangouts/chat/reference/message-formats/cards#textparagraph>
+[KeyValue Widget]: <https://developers.google.com/hangouts/chat/reference/message-formats/cards#keyvalue>
 
 [Jenkins]: <https://jenkins.io> 
 [Shared Libraries]: <https://jenkins.io/doc/book/pipeline/shared-libraries/>
