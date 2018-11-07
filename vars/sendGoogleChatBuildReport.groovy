@@ -3,23 +3,38 @@
 import static groovy.json.JsonOutput.toJson
 
 void call(final Map<String, String> buildProperties = [:], final String url = env.GOOGLE_CHAT_URL) {
-    buildProperties."Build" = "#${env.BUILD_NUMBER}"
+    final Map<String, String> RESULT_IMGS = [
+        SUCCESS: "https://jenkins.io/doc/book/resources/blueocean/dashboard/status-passed.png",
+        UNSTABLE: "https://jenkins.io/doc/book/resources/blueocean/dashboard/status-unstable.png",
+        FAILURE: "https://jenkins.io/doc/book/resources/blueocean/dashboard/status-failed.png",
+        NOT_BUILT: "https://jenkins.io/doc/book/resources/blueocean/dashboard/status-in-progress.png",
+        ABORTED: "https://jenkins.io/doc/book/resources/blueocean/dashboard/status-aborted.png"
+    ]
+    final Map<String, String> RESULT_TEXT = [
+        SUCCESS: "succeeded",
+        UNSTABLE: "is unstable",
+        FAILURE: "failed",
+        NOT_BUILT: "is in progress",
+        ABORTED: "is aborted"
+    ]
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
     if (currentBuild.changeSets.logs) {
         buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.flatten().join(", ")}"
     }
-
-    Map<String, String> actions = [
-        "BUILD": env.BUILD_URL,
-        "CONSOLE": "${env.BUILD_URL}console",
-        "TESTS": "${env.BUILD_URL}testReport"
+    final Map<String, String> actions = [
+            "BUILD": env.BUILD_URL,
+            "CONSOLE": "${env.BUILD_URL}console",
+            "TESTS": "${env.BUILD_URL}testReport"
     ]
 
     final Map<String, Object> complexMessage = [
         cards: [
             [
                 header: [
-                    title: "Build Status <b>${env.JOB_NAME}<b>"
+                    title: "Build status ${env.JOB_NAME} ${RESULT_TEXT[currentBuild.result]}",
+                    subtitle: "#${env.BUILD_NUMBER}",
+                    imageUrl: RESULT_IMGS[currentBuild.result],
+                    imageStlye: "AVATAR"
                 ],
                 sections: []
             ]
