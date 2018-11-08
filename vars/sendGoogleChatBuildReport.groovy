@@ -17,10 +17,8 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         NOT_BUILT: "is in progress",
         ABORTED: "is aborted"
     ]
-    buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
-    if (currentBuild.changeSets.logs) {
-        buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.flatten().join(", ")}"
-    }
+    buildProperties."Cause" = "${currentBuild.buildCauses?.shortDescription?.join(", ")}"
+
     final Map<String, String> actions = [
         "BUILD": env.BUILD_URL,
         "CONSOLE": "${env.BUILD_URL}console",
@@ -31,9 +29,9 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         cards: [
             [
                 header: [
-                    title: "Build status ${env.JOB_NAME} ${RESULT_TEXT[currentBuild.result]}",
-                    subtitle: "#${env.BUILD_NUMBER}",
-                    imageUrl: RESULT_IMGS[currentBuild.result],
+                    title: "${env.JOB_NAME}",
+                    subtitle: "#${env.BUILD_NUMBER} ${RESULT_TEXT[currentBuild.currentResult]}",
+                    imageUrl: RESULT_IMGS[currentBuild.currentResult] ?: RESULT_IMGS["NOT_BUILT"],
                     imageStyle: "AVATAR"
                 ],
                 sections: []
@@ -56,7 +54,22 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         complexMessage.cards[0].sections << [
             header: "Properties",
             widgets: buildProperties.collect { key, value ->
-                [keyValue: [topLabel: "${key}", content: "${value}"]]
+                [keyValue: [topLabel: "${key}", content: "${value}", contentMultiline: "true"]]
+            }
+        ]
+    }
+
+    if (currentBuild.changeSets.logs) {
+        complexMessage.cards[0].sections << [
+            header: "Changes",
+            widgets: currentBuild.changeSets.logs.flatten().collect { log ->
+                [
+                    keyValue: [
+                        topLabel: "${new Date(log.timestamp).toLocaleString()}",
+                        content: "${log.msg}",
+                        bottomLabel: "${log.author.displayName}",
+                        contentMultiline: "true"]
+                ]
             }
         ]
     }
