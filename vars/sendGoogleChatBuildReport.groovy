@@ -29,9 +29,9 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         cards: [
             [
                 header: [
-                    title: "Build status ${env.JOB_NAME} ${RESULT_TEXT[currentBuild.result]}",
+                    title: "${env.JOB_NAME} ${RESULT_TEXT[currentBuild.result] ?: currentBuild.result}",
                     subtitle: "#${env.BUILD_NUMBER}",
-                    imageUrl: RESULT_IMGS[currentBuild.result],
+                    imageUrl: RESULT_IMGS[currentBuild.result] ?: RESULT_IMGS["NOT_BUILT"],
                     imageStyle: "AVATAR"
                 ],
                 sections: []
