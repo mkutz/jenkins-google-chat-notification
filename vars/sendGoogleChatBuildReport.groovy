@@ -18,9 +18,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         ABORTED: "is aborted"
     ]
     buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
-    if (currentBuild.changeSets.logs) {
-        buildProperties."Changes" = "${currentBuild.changeSets.logs.msg.flatten().join(", ")}"
-    }
+
     final Map<String, String> actions = [
         "BUILD": env.BUILD_URL,
         "CONSOLE": "${env.BUILD_URL}console",
@@ -57,6 +55,21 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
             header: "Properties",
             widgets: buildProperties.collect { key, value ->
                 [keyValue: [topLabel: "${key}", content: "${value}"], contentMultiline: "true"]
+            }
+        ]
+    }
+
+    if (currentBuild.changeSets.logs) {
+        complexMessage.cards[0].sections << [
+            header: "Changes",
+            widgets: currentBuild.changeSets.logs.flatten().collect { ChangeLogSet.Entry log ->
+                [
+                    keyValue: [
+                        topLabel: "${new Date(log.timestamp).toLocaleString()}",
+                        content: "${log.msg}",
+                        bottomLabel: "${log.author.displayName}",
+                        contentMultiline: "true"]
+                ]
             }
         ]
     }
