@@ -56,7 +56,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         complexMessage.cards[0].sections << [
             header: "Properties",
             widgets: buildProperties.collect { key, value ->
-                [keyValue: [topLabel: "${key}", content: "${value}"]]
+                [keyValue: [topLabel: "${key}", content: "${value}"], contentMultiline: "true"]
             }
         ]
     }
