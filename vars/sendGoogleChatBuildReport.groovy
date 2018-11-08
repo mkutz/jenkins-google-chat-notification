@@ -62,7 +62,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
     if (currentBuild.changeSets.logs) {
         complexMessage.cards[0].sections << [
             header: "Changes",
-            widgets: currentBuild.changeSets.logs.flatten().collect { ChangeLogSet.Entry log ->
+            widgets: currentBuild.changeSets.logs.flatten().collect { log ->
                 [
                     keyValue: [
                         topLabel: "${new Date(log.timestamp).toLocaleString()}",
