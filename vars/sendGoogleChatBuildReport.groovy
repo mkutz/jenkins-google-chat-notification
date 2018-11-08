@@ -34,7 +34,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
                     title: "Build status ${env.JOB_NAME} ${RESULT_TEXT[currentBuild.result]}",
                     subtitle: "#${env.BUILD_NUMBER}",
                     imageUrl: RESULT_IMGS[currentBuild.result],
-                    imageStlye: "AVATAR"
+                    imageStyle: "AVATAR"
                 ],
                 sections: []
             ]
