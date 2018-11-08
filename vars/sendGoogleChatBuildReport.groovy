@@ -17,7 +17,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         NOT_BUILT: "is in progress",
         ABORTED: "is aborted"
     ]
-    buildProperties."Cause" = "${currentBuild.buildCauses.shortDescription.join(", ")}"
+    buildProperties."Cause" = "${currentBuild.buildCauses?.shortDescription?.join(", ")}"
 
     final Map<String, String> actions = [
         "BUILD": env.BUILD_URL,
