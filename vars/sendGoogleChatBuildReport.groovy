@@ -85,19 +85,6 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         ]
     }
 
-    if (actions) {
-        complexMessage.cards[0].sections << [
-            widgets: [
-                [
-                    buttons:
-                        actions.collect { label, href ->
-                            [textButton: [text: label, onClick: [openLink: [url: href]]]]
-                        }
-                ]
-            ]
-        ]
-    }
-
     if (currentBuild.rawBuild.artifacts) {
         echo "The build has artifacts: ${currentBuild.rawBuild.artifacts.fileName.join(", ")}"
 
@@ -112,6 +99,19 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
                         ]
                     ]
                 }
+            ]
+        ]
+    }
+
+    if (actions) {
+        complexMessage.cards[0].sections << [
+            widgets: [
+                [
+                    buttons:
+                        actions.collect { label, href ->
+                            [textButton: [text: label, onClick: [openLink: [url: href]]]]
+                        }
+                ]
             ]
         ]
     }
