@@ -98,8 +98,22 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         ]
     }
 
-    if (currentBuild.rawBuild.artifacts) {
+    List artifacts = currentBuild.rawBuild.artifacts
+    if (artifacts) {
         echo "The build has artifacts: ${currentBuild.rawBuild.artifacts.fileName.join(", ")}"
+
+        complexMessage.cards[0].sections << [
+            header: "Artifatcs"
+            widgets: [
+                artifacts.findAll { it.fileName ==~ /^.*\.(je?pg|png|gif)$/ }.collect { imageArtifact ->
+                    [
+                        image: [
+                            imageUrl: "${imageArtifact.href}", onClick: [openLink: [url: "${imageArtifact.href}"]]
+                        ]
+                    ]
+                }
+            ]
+        ]
     }
 
     final String requestBody = toJson(complexMessage)
