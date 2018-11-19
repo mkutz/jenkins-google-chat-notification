@@ -98,6 +98,10 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         ]
     }
 
+    if (currentBuild.rawBuild.artifacts) {
+        echo "The build has artifacts: ${currentBuild.rawBuild.artifacts.fileName.join(", ")}"
+    }
+
     final String requestBody = toJson(complexMessage)
     echo requestBody
 
