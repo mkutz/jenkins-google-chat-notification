@@ -98,17 +98,16 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         ]
     }
 
-    List artifacts = currentBuild.rawBuild.artifacts
-    if (artifacts) {
+    if (currentBuild.rawBuild.artifacts) {
         echo "The build has artifacts: ${currentBuild.rawBuild.artifacts.fileName.join(", ")}"
 
         complexMessage.cards[0].sections << [
             header: "Artifatcs",
             widgets: [
-                artifacts.findAll { it.fileName ==~ /^.*\.(je?pg|png|gif)$/ }.collect { imageArtifact ->
+                currentBuild.rawBuild.artifacts.findAll { it.fileName ==~ /^.*\.(je?pg|png|gif)$/ }.collect { image ->
                     [
                         image: [
-                            imageUrl: "${imageArtifact.href}", onClick: [openLink: [url: "${imageArtifact.href}"]]
+                            imageUrl: "${image.href}", onClick: [openLink: [url: "${image.href}"]]
                         ]
                     ]
                 }
