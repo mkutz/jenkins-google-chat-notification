@@ -103,7 +103,7 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
         echo "The build has artifacts: ${currentBuild.rawBuild.artifacts.fileName.join(", ")}"
 
         complexMessage.cards[0].sections << [
-            header: "Artifatcs"
+            header: "Artifatcs",
             widgets: [
                 artifacts.findAll { it.fileName ==~ /^.*\.(je?pg|png|gif)$/ }.collect { imageArtifact ->
                     [
