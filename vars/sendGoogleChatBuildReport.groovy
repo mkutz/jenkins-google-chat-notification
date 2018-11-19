@@ -107,7 +107,8 @@ void call(final Map<String, String> buildProperties = [:], final String url = en
                 currentBuild.rawBuild.artifacts.findAll { it.fileName ==~ /^.*\.(je?pg|png|gif)$/ }.collect { image ->
                     [
                         image: [
-                            imageUrl: "${image.href}", onClick: [openLink: [url: "${image.href}"]]
+                            imageUrl: "${env.BUILD_URL}artifact/${image.href}",
+                            onClick: [openLink: [url: "${env.BUILD_URL}artifact/${image.href}"]]
                         ]
                     ]
                 }
